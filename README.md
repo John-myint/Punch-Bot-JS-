@@ -8,7 +8,7 @@ A fun, sarcastic Google Apps Script bot that tracks team break times using Teleg
 - ✅ **Break-Specific Sarcasm** - Different funny messages for each break type
 - ✅ **Daily Limits** - Prevents abuse with configurable limits per break
 - ✅ **Auto-Punch** - Automatically punches out overtime breaks after expected duration + 5 min grace
-- ✅ **Daily Reports** - Summarizes all breaks by user at 8 PM
+- ✅ **Daily Reports** - Summarizes total breaks by type (wc, cy, bwc) and shows leaderboard (King of Poop, King of Pee, King of Smoke) at 8 PM
 - ✅ **Monthly Migration** - Auto-archives previous month's data on 1st of month
 - ✅ **Group Chat Ready** - Tags usernames for clarity in group conversations
 - ✅ **Duplicate Prevention** - Can't start a new break while one is active

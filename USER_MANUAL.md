@@ -204,24 +204,22 @@ This is used for:
 ## 📋 Daily Report
 
 **Every day at 8 PM**, you'll get an automated report showing:
-- All breaks taken that day
-- Time spent on each break
-- Total breaks and total time
+- Total breaks taken that day by type (wc, cy, bwc only - meals excluded)
+- Who's the King of Poop, King of Pee, and King of Smoke
 
 **Example:**
 ```
 📊 DAILY REPORT - 1/26/2026
 
-👤 john_doe
-   • wc: 8min [✅ OK]
-   • cy: 10min [✅ OK]
-   • cf+2: 35min [⚠️ OVER TIME]
-   📈 3 breaks | Total: 53min
+📊 TOTAL BREAKS TODAY:
+🚽 WC: 24x
+🚬 CY: 22x
+💩 BWC: 10x
 
-👤 jane_smith
-   • bwc: 18min [✅ OK]
-   • cf+1: 20min [✅ OK]
-   📈 2 breaks | Total: 38min
+🏆 LEADERBOARD:
+💩 King of Poop (BWC): @user_a
+🚽 King of Pee (WC): @user_b
+🚬 King of Smoke (CY): @user_c
 ```
 
 ---

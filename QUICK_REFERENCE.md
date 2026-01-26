@@ -46,10 +46,15 @@ reset
    ```
    📊 DAILY REPORT - 1/26/2026
    
-   👤 @john_doe
-   • wc: 8min [✅ OK]
-   • cf+2: 35min [⚠️ OVER TIME]
-   📈 2 breaks | Total: 43min
+   � TOTAL BREAKS TODAY:
+   🚽 WC: 24x
+   🚬 CY: 22x
+   💩 BWC: 10x
+   
+   🏆 LEADERBOARD:
+   💩 King of Poop (BWC): @user_a
+   🚽 King of Pee (WC): @user_b
+   🚬 King of Smoke (CY): @user_c
    ```
 
 ## Apps Script Functions
@@ -75,10 +80,9 @@ setScriptProperties()    // Set SHEET_ID & BOT_TOKEN
 2. TIME (HH:MM:SS)
 3. USERNAME
 4. BREAK_CODE
-5. BREAK_NAME
-6. EXPECTED_DURATION
-7. STATUS (ON BREAK)
-8. CHAT_ID
+5. EXPECTED_DURATION
+6. STATUS (ON BREAK)
+7. CHAT_ID
 
 ### Punch_Logs
 1. DATE (M/D/YYYY)
