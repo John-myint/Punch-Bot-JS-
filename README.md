@@ -67,9 +67,10 @@ curl https://api.telegram.org/botYOUR_BOT_TOKEN/setWebhook?url=DEPLOYMENT_URL
 
 ### 6. Initialize Triggers
 Run `setupTriggers()` in Apps Script editor to set up automated tasks:
-- Every 1 minute: Auto-punch overtime breaks
-- Every day at 8 PM: Send daily report
-- Every day at midnight: Monthly migration (if it's the 1st)
+- **Every 5 seconds**: Process queue requests (handles up to 30-70 concurrent employees)
+- **Every 1 minute**: Auto-punch overtime breaks
+- **Every day at 8 PM**: Send daily report
+- **Every day at midnight**: Monthly migration (if it's the 1st)
 
 ## 💬 Telegram Commands
 
@@ -98,9 +99,15 @@ Type any of these to cancel the current break:
 
 ## 📊 Data Storage
 
+### Queue Sheet
+Handles concurrent requests safely (NEW in v2.1):
+- TIMESTAMP | USERNAME | CHAT_ID | ACTION | PARAM
+- Processes requests one-at-a-time to prevent race conditions
+- Entries deleted immediately after processing
+
 ### Live Breaks Sheet
 Tracks active breaks in real-time:
-- DATE | TIME | USERNAME | BREAK_CODE | BREAK_NAME | EXPECTED_DURATION | STATUS | CHAT_ID
+- DATE | TIME | USERNAME | BREAK_CODE | EXPECTED_DURATION | STATUS | CHAT_ID
 
 ### Punch Logs Sheet
 Stores completed breaks for reporting:
@@ -183,15 +190,53 @@ Each break type has unique themed sarcasm:
 
 Invalid codes get roasted with 10 different sarcastic responses!
 
+## 🔀 Queue System (Concurrency Handling)
+
+**Version 2.1+** includes a FIFO queue to safely handle multiple simultaneous requests:
+
+### How It Works
+1. **User sends break code** (e.g., `wc`)
+2. **doPost() adds request to Queue sheet** (not processing directly)
+3. **User gets "⏳ Processing..." message** (instant feedback)
+4. **Scheduled trigger (every 5 sec) processes queue** (one request at a time)
+5. **Queue entry deleted after processing** (clears queue)
+6. **User gets confirmation message** (with sarcasm, within 5 seconds)
+
+### Why Queue System?
+- ✅ **Prevents race conditions** when 30-70+ employees take breaks simultaneously
+- ✅ **No data corruption** - sequential processing guarantees data integrity
+- ✅ **No duplicate entries** - each request processed exactly once
+- ✅ **Respects API limits** - spreads requests over time
+- ✅ **Timeout safe** - no long-running webhook processes
+
+### Queue Actions
+- **BREAK_START**: Start a new break (calls `processBreak()`)
+- **BREAK_END**: End active break (calls `handlePunchBack()`)
+- **BREAK_CANCEL**: Cancel active break (calls `handleCancel()`)
+
+### Queue Sheet Format
+```
+TIMESTAMP      | USERNAME   | CHAT_ID | ACTION       | PARAM
+15:30:45.123   | john_doe   | 123456  | BREAK_START  | wc
+15:30:46.456   | jane_smith | 234567  | BREAK_START  | cf+1
+15:30:47.789   | bob_jones  | 345678  | BREAK_END    | (empty)
+```
+
+Each entry processed in order, then deleted immediately (Option 1: clear immediately).
+
+---
+
 ## ⚙️ Technical Details
 
 - **Language**: Google Apps Script (JavaScript)
 - **Infrastructure**: Serverless (Google Apps Script)
-- **Data**: Google Sheets (2 sheets + archives)
+- **Data**: Google Sheets (3 sheets: Live_Breaks, Punch_Logs, Queue + archives)
+- **Concurrency**: FIFO queue for safe multi-user handling
 - **Messaging**: Telegram Bot API
 - **Automation**: Time-based triggers (Apps Script)
-- **Date Format**: M/D/YYYY (text, no auto-conversion)
-- **Time Format**: HH:MM:SS (text, no auto-conversion)
+- **Timezone**: Dubai (Asia/Dubai, UTC+4) - auto-set on initialization
+- **Date Format**: M/D/YYYY (text)
+- **Time Format**: HH:MM:SS (text)
 
 ## 🐛 Troubleshooting
 

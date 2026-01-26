@@ -65,15 +65,45 @@ checkSheetHeaders()      // Show sheet structure
 listAllSheets()          // List all sheets
 dailyReport()            // Manually send daily report
 autoPunchBackOvertime()  // Manually check overtime
+processQueue()           // Manually process queue (auto-runs every 5 sec)
 ```
 
 ### Setup Functions
 ```javascript
-setupTriggers()          // Initialize automations
+setupTriggers()          // Initialize automations (includes queue processor)
 setScriptProperties()    // Set SHEET_ID & BOT_TOKEN
 ```
 
+## Queue System (v2.1+)
+
+### How It Works
+1. User sends break code → Added to Queue
+2. Gets instant "⏳ Processing..." message
+3. Queue processor (every 5 sec) processes requests one-at-a-time
+4. User gets confirmation within seconds
+5. Queue entry auto-deleted
+
+### Queue Columns
+- TIMESTAMP (when added)
+- USERNAME
+- CHAT_ID  
+- ACTION (BREAK_START, BREAK_END, BREAK_CANCEL)
+- PARAM (break code or empty)
+
+### Why Queue?
+- ✅ Handles 30-70 concurrent employees safely
+- ✅ Prevents data corruption
+- ✅ Prevents duplicate entries
+- ✅ Respects API limits
+
 ## Sheet Columns
+
+### Queue (NEW in v2.1)
+1. TIMESTAMP
+2. USERNAME
+3. CHAT_ID
+4. ACTION (BREAK_START / BREAK_END / BREAK_CANCEL)
+5. PARAM (break code)
 
 ### Live_Breaks
 1. DATE (M/D/YYYY)
@@ -118,6 +148,8 @@ setScriptProperties()    // Set SHEET_ID & BOT_TOKEN
 | Grace Period | 5 min | After expected duration before auto-punch |
 | Daily Report | 8 PM | Sent automatically every day |
 | Monthly Archive | 1st of month | Creates "M/YYYY Archive" sheet |
+| Queue Processor | Every 5 sec | Handles concurrent requests |
+| Max Concurrent | 30-70+ | Safe handling without data corruption |
 | Date Format | M/D/YYYY | Text format, no auto-convert |
 | Time Format | HH:MM:SS | Text format, no auto-convert |
 

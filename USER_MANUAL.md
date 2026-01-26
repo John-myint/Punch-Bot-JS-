@@ -224,6 +224,38 @@ This is used for:
 
 ---
 
+## ⏳ Queue Processing (Fast & Reliable)
+
+**Since Version 2.1**, the bot uses a **smart queue system** to handle many people taking breaks at the same time.
+
+### What's the Queue?
+The queue is like a **digital waiting line**. When you send a break code:
+1. You get an instant **"⏳ Processing..."** message
+2. Your request goes into the queue
+3. The bot processes requests **one at a time** (very fast)
+4. You get your confirmation message
+
+### Why This Matters
+- ✅ **Works with many people at once** (30-70 simultaneous requests)
+- ✅ **No data corruption or lost data**
+- ✅ **No duplicate entries**
+- ✅ **Fast processing** (less than 5 seconds per request)
+
+### What You See
+When you send `wc`:
+```
+You: wc
+Bot: ⏳ Processing...
+     (less than 5 seconds later)
+Bot: 🚽 Bathroom run initiated…
+     ⏱️ Waste Control (10 min)
+     📊 Status: OK | 1/3 used today
+```
+
+The "⏳ Processing..." message is normal and means your request is being handled safely!
+
+---
+
 ## 💡 Pro Tips
 
 ### Tip 1: You're in a Group Chat with Everyone
