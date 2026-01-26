@@ -394,9 +394,15 @@ function autoPunchBackOvertime() {
   const now = new Date();
   const today = (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getFullYear();
   
+  // Format time as HH:MM:SS (same format as in processBreak)
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const currentTimeStr = hours + ':' + minutes + ':' + seconds;
+  
   Logger.log('=== AUTO PUNCH CHECK ===');
   Logger.log('Today: ' + today);
-  Logger.log('Current Time: ' + now.toLocaleTimeString());
+  Logger.log('Current Time: ' + currentTimeStr);
   
   const data = liveSheet.getDataRange().getValues();
   Logger.log('Total rows in Live Breaks: ' + data.length);
@@ -415,25 +421,41 @@ function autoPunchBackOvertime() {
       
       const username = data[i][2]; // USERNAME (col 3, index 2)
       const breakCode = data[i][3]; // BREAK_CODE (col 4, index 3)
-      const breakStartTime = data[i][1]; // TIME (col 2, index 1)
-      const expectedDuration = data[i][4]; // EXPECTED_DURATION (col 5, index 4)
+      const breakStartTime = String(data[i][1]); // TIME (col 2, index 1)
+      const expectedDuration = parseInt(data[i][4]); // EXPECTED_DURATION (col 5, index 4)
       const chatId = data[i][6]; // CHAT_ID (col 7, index 6)
       
       Logger.log('Found break: ' + username + ' - ' + breakCode + ' (started: ' + breakStartTime + ')');
       
-      // Calculate elapsed time
-      const start = new Date('1970/01/01 ' + breakStartTime);
-      const currentTime = new Date('1970/01/01 ' + now.toLocaleTimeString());
-      let elapsedMinutes = Math.round((currentTime - start) / 60000);
+      // Calculate elapsed time using HH:MM:SS format
+      const startParts = breakStartTime.split(':');
+      const startHours = parseInt(startParts[0]);
+      const startMinutes = parseInt(startParts[1]);
+      const startSeconds = parseInt(startParts[2] || 0);
       
-      if (isNaN(elapsedMinutes) || elapsedMinutes < 0) {
-        elapsedMinutes = 0;
+      const currentHours = parseInt(hours);
+      const currentMinutes = parseInt(minutes);
+      const currentSeconds = parseInt(seconds);
+      
+      // Convert both times to seconds for accurate calculation
+      const startTotalSeconds = startHours * 3600 + startMinutes * 60 + startSeconds;
+      const currentTotalSeconds = currentHours * 3600 + currentMinutes * 60 + currentSeconds;
+      let elapsedSeconds = currentTotalSeconds - startTotalSeconds;
+      
+      // Handle day wrap-around (if current time < start time, break went past midnight)
+      if (elapsedSeconds < 0) {
+        elapsedSeconds += 86400; // 24 hours in seconds
       }
+      
+      let elapsedMinutes = Math.round(elapsedSeconds / 60);
+      
+      Logger.log('  Start: ' + breakStartTime + ' | Current: ' + currentTimeStr + ' | Elapsed: ' + elapsedMinutes + ' min');
+      Logger.log('  Expected: ' + expectedDuration + ' min | Grace Period: 5 min | Total allowed: ' + (expectedDuration + 5) + ' min');
       
       // If exceeded by 5 minutes, auto-punch back
       if (elapsedMinutes > expectedDuration + 5) {
         autoPunched++;
-        const returnTime = now.toLocaleTimeString();
+        const returnTime = currentTimeStr;
         
         Logger.log('  ⚠️ AUTO PUNCHING! Over by ' + (elapsedMinutes - expectedDuration) + ' min');
         
