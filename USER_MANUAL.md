@@ -6,10 +6,11 @@
 
 ## 🎯 What is Punch Bot?
 
-Punch Bot is a **fun, sarcastic Telegram bot** that tracks when you take breaks. 
+Punch Bot is a **fun, sarcastic Telegram bot** that tracks when you take breaks in your team's group chat.
 
-Just tell the bot when you're taking a break, and it keeps track of:
-- How long you were away
+Just type a break code in the group, and the bot will:
+- Confirm your break with a funny message (everyone in the group sees this)
+- Keep track of how long you were away
 - What type of break you took
 - How many breaks you've had today
 - Whether you went over time
@@ -40,19 +41,11 @@ It's funny, not mean! The sarcasm encourages you to actually come back on time. 
 
 ## 🚀 Getting Started
 
-### Step 1: Find the Bot on Telegram
+### That's It!
 
-Your admin will share the bot's name/link with you.
+You're already added to the Telegram group with the bot. The bot is listening to all messages in the group.
 
-### Step 2: Start a Conversation
-
-Open Telegram and search for the bot name or click the link.
-
-Hit **START** to begin.
-
-### Step 3: You're Ready!
-
-Now you can start tracking breaks. That's it! 🎉
+Just start typing break codes and the bot will respond to you automatically. No setup needed! 🎉
 
 ---
 
@@ -235,13 +228,14 @@ This is used for:
 
 ## 💡 Pro Tips
 
-### Tip 1: Use in Group Chat
-The bot tags your username, so everyone knows who's on break.
+### Tip 1: You're in a Group Chat with Everyone
+The bot is in the group chat with your team. When you type a break code, the bot responds publicly so everyone can see who's on break and when.
 ```
 You: wc
 Bot: 👤 @john_doe
      🚽 Bathroom run initiated…
 ```
+Everyone sees this - that's how it works!
 
 ### Tip 2: Be Honest About Time
 The bot counts actual time, so:
