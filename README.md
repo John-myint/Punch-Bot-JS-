@@ -234,7 +234,7 @@ Each entry processed in order, then deleted immediately (Option 1: clear immedia
 - **Concurrency**: FIFO queue for safe multi-user handling
 - **Messaging**: Telegram Bot API
 - **Automation**: Time-based triggers (Apps Script)
-- **Timezone**: Dubai (Asia/Dubai, UTC+4) - auto-set on initialization
+- **Timezone**: Dubai (Asia/Dubai, UTC+4) - configured in appsscript.json + auto-set on script load
 - **Date Format**: M/D/YYYY (text)
 - **Time Format**: HH:MM:SS (text)
 

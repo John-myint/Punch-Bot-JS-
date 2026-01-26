@@ -17,11 +17,20 @@
 ### 3. Google Apps Script Setup
 - [ ] Open your Apps Script project
 - [ ] Paste code from `punchbot.js`
+- [ ] Copy `appsscript.json` manifest with timezone configuration
 - [ ] Go to **Tools** → **Script properties**
 - [ ] Add properties:
   - **SHEET_ID**: Your Google Sheet ID
   - **BOT_TOKEN**: Your Telegram Bot Token
-- [ ] Save
+- [ ] Verify **appsscript.json** contains:
+  ```json
+  {
+    "timeZone": "Asia/Dubai",
+    "exceptionLogging": "STACKDRIVER",
+    "runtimeVersion": "V8"
+  }
+  ```
+- [ ] Save all changes
 
 ### 4. Deploy as Web App
 - [ ] Click **Deploy** → **New Deployment**
@@ -137,7 +146,8 @@ If something breaks:
 
 4. **Daily report not sending**
    - Check trigger is set: Run `setupTriggers()` again
-   - Verify time zone in Apps Script
+   - Verify timezone in **appsscript.json**: Must be `Asia/Dubai`
+   - Check spreadsheet timezone: Run `listAllSheets()` and verify
    - Check Punch_Logs has data for today
 
 ## Post-Deployment

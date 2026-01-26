@@ -84,9 +84,24 @@ Index 7: CHAT_ID
 
 ## 3. TIMEZONE CONFIGURATION
 
-### ✅ Timezone Auto-Set on Script Load
+### ✅ Timezone Set in Three Ways
+
+**1. Manifest Configuration (Primary - appsscript.json)**
+```json
+{
+  "timeZone": "Asia/Dubai",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}
+```
+- ✅ Sets default timezone for entire Apps Script project
+- ✅ Applied automatically when script runs
+- ✅ Affects all date/time operations and triggers
+- ✅ Most reliable method (project-level configuration)
+
+**2. Timezone Auto-Set on Script Load (Code-level)**
 ```javascript
-// Lines 28-33
+// Lines 28-33 in punchbot.js
 try {
   const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
   spreadsheet.setSpreadsheetTimeZone('Asia/Dubai');
@@ -96,10 +111,15 @@ try {
 }
 ```
 
-### ✅ Timezone Also Set in setupTriggers()
+**3. Timezone Set in setupTriggers()**
 - Line 927: Sets timezone explicitly in trigger setup
+- Ensures consistency across all trigger executions
 
-**Status:** ✅ Timezone set automatically on initialization AND explicitly in setupTriggers()
+**Status:** ✅ Timezone set at MANIFEST LEVEL (appsscript.json) + dual code-level backup
+- ✅ Project-wide timezone: Asia/Dubai (UTC+4)
+- ✅ All timestamps: Dubai local time
+- ✅ All date calculations: Dubai calendar
+- ✅ All triggers: Scheduled in Dubai time
 
 ---
 
