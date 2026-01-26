@@ -670,7 +670,7 @@ function handlePunchBack(username, chatId) {
       
       // Calculate duration
       const breakStartTime = data[i][1];
-      const expectedDuration = data[i][5];
+      const expectedDuration = data[i][4]; // EXPECTED_DURATION is at index 4 in Live_Breaks
       const breakCode = data[i][3];
       
       const start = new Date('1970/01/01 ' + breakStartTime);
