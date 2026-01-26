@@ -1014,10 +1014,10 @@ function setupTriggers() {
   // Remove old triggers
   ScriptApp.getProjectTriggers().forEach(trigger => ScriptApp.deleteTrigger(trigger));
   
-  // Process queue every 5 seconds (for concurrent requests)
+  // Process queue every 1 second (for concurrent requests)
   ScriptApp.newTrigger('processQueue')
     .timeBased()
-    .everySeconds(5)
+    .everySeconds(1)
     .create();
   
   // Auto punch back overtime breaks every minute
