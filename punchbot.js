@@ -36,10 +36,10 @@ try {
 
 // Break configurations
 const BREAKS = {
-  wc: { duration: 10, dailyLimit: 3, name: 'Waste Control', greeting: '🚽 Go easy on the throne!' },
+  wc: { duration: 10, dailyLimit: 5, name: 'Waste Control', greeting: '🚽 Go easy on the throne!' },
   cy: { duration: 10, dailyLimit: 3, name: 'Smoking Break', greeting: '🚬 Blow one away!' },
   bwc: { duration: 20, dailyLimit: 3, name: 'Big Waste Control', greeting: '🚽💨 Don\'t fall in the toilet!' },
-  'cf+1': { duration: 20, dailyLimit: 1, name: 'Breakfast', greeting: '🍳 Enjoy your breakfast!' },
+  'cf+1': { duration: 25, dailyLimit: 1, name: 'Breakfast', greeting: '🍳 Enjoy your breakfast!' },
   'cf+2': { duration: 30, dailyLimit: 1, name: 'Lunch', greeting: '🍽️ Bon appétit!' },
   'cf+3': { duration: 30, dailyLimit: 1, name: 'Dinner', greeting: '🍴 Savor your dinner!' }
 };
