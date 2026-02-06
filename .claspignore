@@ -1,0 +1,56 @@
+# Exclude documentation files
+*.md
+README.md
+DEPLOYMENT_GUIDE.md
+AUTO_DEPLOYMENT_SETUP.md
+OPTIMIZATION_PLAN.md
+SOLUTIONS_COMPARISON.md
+CONCURRENCY_TEST_REPORT.md
+IMPLEMENTATION_COMPLETE.md
+CODE_REVIEW_v2.0.md
+COMPLETION_REPORT.md
+FINAL_SUMMARY.md
+INDEX.md
+QUICK_REFERENCE.md
+USER_MANUAL.md
+MANIFEST.txt
+DEPLOYMENT_CHECKLIST.md
+
+# Exclude git files
+.git/
+.gitignore
+.github/
+
+# Exclude node modules
+node_modules/
+package.json
+package-lock.json
+
+# Exclude alternative solutions (keep only punchbot_fastest.js)
+fast_queue_solution.js
+
+# Exclude backup files
+*_old.js
+*_backup.js
+*.bak
+*~
+
+# Exclude OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Exclude IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Exclude credentials
+.clasprc.json
+service-account-key.json
+credentials.json
+
+# Exclude test reports (optional - remove if you want tests deployed)
+# test_concurrent_load.js

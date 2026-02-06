@@ -1,6 +1,29 @@
+# Node modules
 node_modules/
-.DS_Store
+package-lock.json
+
+# Credentials (NEVER commit these!)
+.clasprc.json
+.clasp.json
+service-account-key.json
+credentials.json
 .env
+
+# Logs
 *.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
 .idea/
 .vscode/
+*.swp
+*.swo
+
+# Backup files
+*_old.js
+*_backup.js
+*.bak

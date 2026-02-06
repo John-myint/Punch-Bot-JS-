@@ -1,0 +1,120 @@
+name: Deploy to Google Apps Script
+
+on:
+  push:
+    branches:
+      - main  # Deploy when pushing to main branch
+    paths:
+      - 'punchbot_fastest.js'
+      - 'punchbot.js'
+      - 'appsscript.json'
+      - 'test_concurrent_load.js'
+      - '.github/workflows/deploy.yml'
+  
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install clasp
+        run: |
+          echo "📦 Installing clasp..."
+          npm install -g @google/clasp
+          echo "✅ clasp installed: $(clasp --version)"
+      
+      - name: Configure clasp credentials
+        run: |
+          echo "🔐 Setting up credentials..."
+          echo '${{ secrets.CLASP_TOKEN }}' > ~/.clasprc.json
+          echo "✅ Credentials configured"
+      
+      - name: Configure project
+        run: |
+          echo "⚙️ Configuring project..."
+          echo '{"scriptId":"${{ secrets.SCRIPT_ID }}","rootDir":"."}' > .clasp.json
+          cat .clasp.json
+          echo "✅ Project configured"
+      
+      - name: Validate files
+        run: |
+          echo "🔍 Validating files before deployment..."
+          
+          # Check if main file exists
+          if [ ! -f "punchbot_fastest.js" ]; then
+            echo "❌ Error: punchbot_fastest.js not found!"
+            exit 1
+          fi
+          
+          # Check JavaScript syntax
+          node --check punchbot_fastest.js
+          echo "✅ Syntax check passed"
+          
+          # Show files to be deployed
+          echo "📋 Files to deploy:"
+          ls -lh *.js appsscript.json 2>/dev/null || true
+      
+      - name: Deploy to Apps Script
+        run: |
+          echo "🚀 Starting deployment..."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          # Push to Apps Script
+          clasp push --force
+          
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Deployment complete!"
+      
+      - name: Create version
+        run: |
+          echo "📌 Creating version..."
+          VERSION_DESC="Auto-deploy from commit ${{ github.sha }} by ${{ github.actor }}"
+          clasp version "$VERSION_DESC" || echo "⚠️ Version creation skipped"
+      
+      - name: Deployment summary
+        if: always()
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 DEPLOYMENT SUMMARY"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "Status: ${{ job.status }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Author: ${{ github.actor }}"
+          echo "Message: ${{ github.event.head_commit.message }}"
+          echo "Time: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "🎉 Deployment successful!"
+            echo "Your bot is now live with the latest code!"
+          else
+            echo "❌ Deployment failed!"
+            echo "Check the logs above for details."
+          fi
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "⚠️ DEPLOYMENT FAILED"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "Common issues:"
+          echo "1. CLASP_TOKEN or SCRIPT_ID secret not set"
+          echo "2. Google Apps Script API not enabled"
+          echo "3. Syntax error in JavaScript files"
+          echo "4. Permission issues with script"
+          echo ""
+          echo "Check the logs above for specific error details."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
