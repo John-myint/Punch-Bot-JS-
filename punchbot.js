@@ -935,6 +935,11 @@ function dailyReport() {
   });
 }
 
+// === HEALTH CHECK (GET) ===
+function doGet(e) {
+  return ContentService.createTextOutput('ok');
+}
+
 // === MONTHLY MIGRATION ===
 function monthlyMigration() {
   const today = new Date();
